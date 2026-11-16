@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: http://floreriarrantofagasta.dondeseria.com/sitemap.xml
+Sitemap: https://floreriarrantofagasta.dondeseria.com/sitemap.xml
