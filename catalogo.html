@@ -815,6 +815,7 @@
         }
 
     </style>
+    <link rel="stylesheet" href="css/super-ofertas.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -824,7 +825,14 @@
     <section class="catalog-hero">
         <div class="container">
             <h1>Catálogo Floral Antofagasta</h1>
-            <p>Recorre nuestra colección completa de arreglos florales, ramos, canastas, cajas y mucho más en Antofagasta</p>
+            <p>Ramos de rosas, bouquets y arreglos fúnebres con súper ofertas hasta el 30 de noviembre, con despacho a domicilio en Antofagasta</p>
+        </div>
+    </section>
+
+    <!-- Súper Ofertas (banner + contador, ver js/super-ofertas.js) -->
+    <section class="so-section">
+        <div class="container">
+            <div data-super-ofertas data-cta-href="#products-grid" data-cta-text="Ver ofertas"></div>
         </div>
     </section>
 
@@ -843,21 +851,14 @@
             <div class="filters-container">
                 <span class="filter-label">Filtrar por:</span>
                 <button class="filter-btn active" data-filter="todos" data-code="000"><span class="filter-code">[000]</span> Todos</button>
-                <button class="filter-btn semana-filter" data-filter="semana" data-code="077"><span class="filter-code">[077]</span> ✦ Promo de la Semana</button>
                 <button class="filter-btn" data-filter="ramos" data-code="100"><span class="filter-code">[100]</span> Ramos</button>
-                <button class="filter-btn" data-filter="cajas" data-code="200"><span class="filter-code">[200]</span> Cajas y Cofres</button>
-                <button class="filter-btn" data-filter="corazones" data-code="300"><span class="filter-code">[300]</span> Corazones</button>
-                <button class="filter-btn" data-filter="canastas" data-code="400"><span class="filter-code">[400]</span> Canastas</button>
-                <button class="filter-btn" data-filter="funebres" data-code="500"><span class="filter-code">[500]</span> Fúnebres</button>
-                <button class="filter-btn" data-filter="especiales" data-code="600"><span class="filter-code">[600]</span> Especiales</button>
-                <button class="filter-btn" data-filter="premium" data-code="700"><span class="filter-code">[700]</span> Premium</button>
-                <button class="filter-btn" data-filter="tulipanes" data-code="800"><span class="filter-code">[800]</span> Tulipanes</button>
-                <button class="filter-btn" data-filter="girasoles" data-code="810"><span class="filter-code">[810]</span> Girasoles</button>
                 <button class="filter-btn" data-filter="rosas" data-code="820"><span class="filter-code">[820]</span> Rosas</button>
+                <button class="filter-btn" data-filter="girasoles" data-code="810"><span class="filter-code">[810]</span> Girasoles</button>
+                <button class="filter-btn" data-filter="funebres" data-code="500"><span class="filter-code">[500]</span> Fúnebres</button>
+                <button class="filter-btn" data-filter="premium" data-code="700"><span class="filter-code">[700]</span> Premium</button>
                 <button class="filter-btn" data-filter="precio-bajo" data-code="900"><span class="filter-code">[900]</span> Hasta $30.000</button>
                 <button class="filter-btn" data-filter="precio-medio" data-code="910"><span class="filter-code">[910]</span> $30.000 - $80.000</button>
                 <button class="filter-btn" data-filter="precio-alto" data-code="920"><span class="filter-code">[920]</span> Más de $80.000</button>
-                <button class="filter-btn peluche-filter" data-filter="peluches" data-code="830"><span class="filter-code">[830]</span> 🧸 Peluches</button>
             </div>
         </div>
     </section>
@@ -865,7 +866,7 @@
     <!-- Results Counter -->
     <div class="results-counter">
         <div class="container">
-            Mostrando <strong id="results-count">119</strong> productos
+            Mostrando <strong id="results-count">20</strong> productos
         </div>
     </div>
 
@@ -912,9 +913,11 @@
 
     <!-- JavaScript -->
     <script src="js/script.js"></script>
+    <script src="js/super-ofertas.js"></script>
     <script>
         // Datos de productos - Catálogo Floral Antofagasta
-const products = [
+// Lista completa (no se borra nada). Lo que se muestra se define en js/super-ofertas.js
+const allProducts = [
     {
         id: 1, code: "001",
         name: "Buqué Premium Rosas Rojas con Ferrero",
@@ -1917,6 +1920,11 @@ const products = [
     }
 ];
 
+// Solo los productos de la Súper Oferta (los demás quedan ocultos)
+const products = superOfertasAplicar(allProducts);
+superOfertasAjustarFiltros(products);
+
+
 /* ============================================================
    PROMOCIÓN DE LA SEMANA
    Contador semanal (cierra cada domingo a las 23:59) y banner
@@ -2220,7 +2228,7 @@ function showFunebreFlyer() {
                     ${product.peluche ? `<div class="peluche-ribbon">🧸 PELUCHE</div>` : ''}
                     ${product.promo && !product.semana ? `
                         <div class="promo-ribbon">
-                            <span class="promo-spark">✦</span> OFERTA <span class="promo-spark">✦</span>
+                            <span class="promo-spark">✦</span> SÚPER OFERTA <span class="promo-spark">✦</span>
                         </div>
                         <div class="promo-savings">-${Math.round((1 - product.price/product.originalPrice)*100)}%</div>
                     ` : ''}
@@ -2238,7 +2246,7 @@ function showFunebreFlyer() {
                     </div>
                     <div class="product-info">
                         <span class="product-code">Cód. ${product.code}</span>
-                        ${product.originalPrice && !product.semana && !product.funebrePromo ? `<span class="discount-badge">¡OFERTA!</span>` : ''}
+                        ${product.originalPrice && !product.semana && !product.funebrePromo ? `<span class="discount-badge">¡SÚPER OFERTA!</span>` : ''}
                         <h3 class="product-name">${product.name}</h3>
                         <div class="product-description">${product.description}</div>
                         <div class="product-footer">

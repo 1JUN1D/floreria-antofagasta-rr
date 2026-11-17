@@ -3,8 +3,9 @@
 // Catálogo con prioridad por categoría + Conversiones Google Ads
 // ===================================
 
-// --- DATOS DEL CATÁLOGO COMPLETO (62 productos) ---
-const products = [
+// --- DATOS DEL CATÁLOGO COMPLETO (no se borra nada) ---
+// Lo que se muestra se define en js/super-ofertas.js
+const allProducts = [
     { id: 1, code: "001", name: "Buqué Premium Rosas Rojas con Ferrero", price: 85000, image: "../assets/foto1.webp", description: "Ramo de lujo con docena de rosas rojas y chocolates Ferrero Rocher, envuelto en papel negro con borde dorado y mariposas decorativas. Ideal para sorprender en aniversarios y declaraciones de amor.", categories: ["ramos", "rosas", "premium", "precio-medio"] },
     { id: 2, code: "002", name: "Mini Buqué de Girasol", price: 18990, image: "../assets/foto2.webp", description: "Pieza acogedora con girasol, gypsophila y helecho en papel beige tipo lino con moño rojo. Perfecto para alegrar un día cualquiera con un detalle delicado.", categories: ["ramos", "girasoles", "precio-bajo"] },
     { id: 3, code: "003", name: "Arreglo Corazón Rosas y Girasoles con Ferrero", price: 57990, image: "../assets/foto3.webp", description: "Caja en forma de corazón con rosas rojas, girasoles y chocolates Ferrero Rocher sobre follaje fresco. Una declaración intensa en formato compacto y muy fotogénico.", categories: ["corazones", "cajas", "rosas", "girasoles", "especiales", "precio-medio"] },
@@ -126,6 +127,10 @@ const products = [
     { id: 212, code: "P12", name: "Peluche Azul Orejón con Amiguito", price: 0, image: "../assets/peluches/12.jpeg", description: "Peluche azul de orejas grandes con un amiguito de colores entre las manos. Colorido, blandito y perfecto para alegrar el día.", categories: ["peluches"], peluche: true },
     { id: 213, code: "P13", name: "Peluche Coleccionable Blanco con Capucha", price: 0, image: "../assets/peluches/13.jpeg", description: "Peluche coleccionable blanco con capucha y medalla dorada. Suave, sofisticado y con mucha personalidad.", categories: ["peluches"], peluche: true },
 ];
+
+// Solo los productos de la Súper Oferta (los demás quedan ocultos)
+const products = superOfertasAplicar(allProducts);
+
 
 
 /* ============================================================
@@ -426,7 +431,7 @@ function renderProducts(filters = [], limit = null) {
                   <img src="${product.image}" alt="${product.name} - Flores a domicilio Antofagasta" loading="lazy">
               </div>`;
         const promoOverlay = product.semana ? semanaCardOverlay(product) : product.funebrePromo ? funebreCardOverlay(product) : (product.promo ? `
-            <div class="promo-ribbon"><span class="promo-spark">✦</span> OFERTA <span class="promo-spark">✦</span></div>
+            <div class="promo-ribbon"><span class="promo-spark">✦</span> SÚPER OFERTA <span class="promo-spark">✦</span></div>
             <div class="promo-savings">-${Math.round((1 - product.price/product.originalPrice)*100)}%</div>
         ` : '');
         const peluchePriceHTML = `<div class="price-block">
@@ -580,6 +585,7 @@ function injectPeluchesFilterChip() {
 
 function initCatalog() {
     window._catalogInitialized = true;
+    superOfertasAjustarFiltros(products);
     injectSemanaFilterChip();
     injectPeluchesFilterChip();
     document.querySelectorAll('.filter-btn').forEach(btn => {
